@@ -17,7 +17,12 @@ doit() {
 
 for x in $(seq 10000)
 do
-  stat -c %s $SCRATCHFILE
+  NXT=${SCRATCH}/simple-$x
+  cp $SCRATCHFILE $NXT
+  stat -c %s $NXT
   doit --add-needed $LIBFILE_PATH
-  $SCRATCHFILE
+  echo ../src/patchelf --add-needed $LIBFILE_PATH $NXT
+  ../src/patchelf --add-needed $LIBFILE_PATH $NXT
+  $NXT
+  SCRATCHFILE=$NXT
 done
